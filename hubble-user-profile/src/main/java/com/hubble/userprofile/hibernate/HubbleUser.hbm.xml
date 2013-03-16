@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 23, 2013 11:18:09 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.hubble.userprofile.hibernate.HubbleUser" table="HubbleUser" catalog="hubble_users">
+        <id name="appId" type="string">
+            <column name="AppId" length="45" />
+            <generator class="assigned" />
+        </id>
+        <property name="name" type="string">
+            <column name="Name" length="100" not-null="true" />
+        </property>
+        <property name="gender" type="string">
+            <column name="Gender" length="45" />
+        </property>
+        <property name="birthday" type="timestamp">
+            <column name="Birthday" length="19" />
+        </property>
+        <property name="hometown" type="string">
+            <column name="Hometown" />
+        </property>
+    </class>
+</hibernate-mapping>

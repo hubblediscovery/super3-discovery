@@ -1,0 +1,11 @@
+com.hubble.test.utils
+com.hubble.userprofile.dataprocessor
+com.hubble.userprofile.exceptions
+com.hubble.userprofile.externaldatareader
+com.hubble.userprofile.facebookuserprofile
+com.hubble.userprofile.hibernate
+com.hubble.userprofile.main
+com.hubble.userprofile.mapper
+com.hubble.userprofile.persistence
+com.hubble.userprofile.types
+com.hubble.userprofile.utils

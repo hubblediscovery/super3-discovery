@@ -1,0 +1,33 @@
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+   <appender name="ConsoleAppender" class="org.apache.log4j.ConsoleAppender">
+      <layout class="org.apache.log4j.PatternLayout">
+         <!-- The default pattern: Date Priority [Category] Message\n -->
+         <param name="ConversionPattern" value="%d %-5p [%c] %m%n"/>
+      </layout>
+  </appender>
+  <appender name="FileAppender" class="org.apache.log4j.rolling.RollingFileAppender">
+        <param name="threshold" value="debug" />
+        <rollingPolicy name="file"
+            class="org.apache.log4j.rolling.TimeBasedRollingPolicy">
+            <param name="FileNamePattern" value="logs/MyLog-%d{yyyy-MM-dd-HH-mm}.log.gz" />
+            <!-- The below param will keep the live update file in a different location-->
+            <param name="ActiveFileName" value="current/HubbleUserProfile.log" />
+        </rollingPolicy>
+
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%5p %d{ISO8601} [%t][%x] %c - %m%n" />
+        </layout>
+</appender>
+
+  <category name="com.hubble.userprofile">
+    <priority value="debug"/>
+  </category>
+
+  <root>
+      <priority value="info"/>
+      <appender-ref ref="FileAppender"/>
+      <appender-ref ref="ConsoleAppender"/>
+  </root>
+
+</log4j:configuration>

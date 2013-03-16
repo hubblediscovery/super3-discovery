@@ -1,0 +1,7 @@
+analyseLocally=true
+eclipse.preferences.version=1
+projectArtifactId=hubble-user-profile
+projectBranch=
+projectGroupId=com.hubble.userprofile.facebookuserprofile
+serverUrl=http\://localhost\:9000
+version=1

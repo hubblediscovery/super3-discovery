@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 23, 2013 11:18:09 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.hubble.userprofile.hibernate.UserFriends" table="UserFriends" catalog="hubble_users">
+        <composite-id name="id" class="com.hubble.userprofile.hibernate.UserFriendsId">
+            <key-property name="userId" type="string">
+                <column name="User_Id" length="45" />
+            </key-property>
+            <key-property name="friendId" type="string">
+                <column name="Friend_Id" length="45" />
+            </key-property>
+        </composite-id>
+    </class>
+</hibernate-mapping>
