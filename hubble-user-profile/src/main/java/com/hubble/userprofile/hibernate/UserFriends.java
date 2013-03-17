@@ -7,6 +7,10 @@ package com.hubble.userprofile.hibernate;
  */
 public class UserFriends implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8696038425481631415L;
 	private UserFriendsId id;
 
 	public UserFriends() {

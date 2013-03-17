@@ -9,6 +9,10 @@ import java.util.Date;
  */
 public class FacebookUserDemographics implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private FacebookUserDemographicsId id;
 	private String username;
 	private String interestedIn;

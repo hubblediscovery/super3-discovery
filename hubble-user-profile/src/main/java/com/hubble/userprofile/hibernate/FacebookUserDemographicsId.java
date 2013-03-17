@@ -7,6 +7,10 @@ package com.hubble.userprofile.hibernate;
  */
 public class FacebookUserDemographicsId implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -856324590062908838L;
 	private String facebookId;
 	private String userAppId;
 

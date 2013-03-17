@@ -7,6 +7,10 @@ package com.hubble.userprofile.hibernate;
  */
 public class FacebookUserInterests implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3437398773507819920L;
 	private String userAppId;
 	private String quotes;
 	private String sports;

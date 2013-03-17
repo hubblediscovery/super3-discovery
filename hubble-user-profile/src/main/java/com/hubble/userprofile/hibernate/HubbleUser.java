@@ -9,6 +9,10 @@ import java.util.Date;
  */
 public class HubbleUser implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -507307609160777069L;
 	private String appId;
 	private String name;
 	private String gender;
