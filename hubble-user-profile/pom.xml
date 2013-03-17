@@ -68,11 +68,6 @@
 			<artifactId>j-calais</artifactId>
 			<version>1.0</version>
 		</dependency>
-		<dependency>
-			<groupId>alchemy-api</groupId>
-			<artifactId>alchemyapi</artifactId>
-			<version>0.8</version>
-		</dependency>
 	</dependencies>
 	<description>User profile management service for Hubble recommendation system</description>
 </project>
