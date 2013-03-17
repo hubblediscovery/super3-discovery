@@ -1,0 +1,120 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.appdisc</groupId>
+  <artifactId>trend-event</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>app-disc-trend</name>
+  <description>Trending News Events</description>
+  <build>
+    <sourceDirectory>src</sourceDirectory>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.3.2</version>
+        <configuration>
+          <source>1.7</source>
+          <target>1.7</target>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  <repositories>
+      <repository>
+         <id>twitter4j.org</id>
+         <name>twitter4j.org Repository</name>
+         <url>http://twitter4j.org/maven2</url>
+         <releases>
+            <enabled>true</enabled>
+         </releases>
+         <snapshots>
+            <enabled>true</enabled>
+         </snapshots>
+      </repository>
+   </repositories>
+   <dependencies>
+      <dependency>
+         <groupId>org.twitter4j</groupId>
+         <artifactId>twitter4j-core</artifactId>
+         <version>2.2.6</version>
+      </dependency>
+      <dependency>
+			<groupId>org.mongodb</groupId>
+			<artifactId>mongo-java-driver</artifactId>
+			<version>2.9.3</version>
+	  </dependency>
+	  <dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-mongodb</artifactId>
+			<version>1.1.1.RELEASE</version>
+	  </dependency>
+	  <dependency>
+	      <groupId>joda-time</groupId>
+	      <artifactId>joda-time</artifactId>
+	      <version>1.6</version>
+      </dependency>
+      <dependency>
+		<groupId>org.slf4j</groupId>
+		<artifactId>slf4j-api</artifactId>
+		<version>1.7.2</version>
+	  </dependency>
+	  <dependency>
+		  <groupId>ch.qos.logback</groupId>
+		  <artifactId>logback-classic</artifactId>
+		  <version>1.0.9</version>
+	  </dependency>
+	  <dependency>
+		  <groupId>ch.qos.logback</groupId>
+		  <artifactId>logback-core</artifactId>
+		  <version>1.0.9</version>
+	  </dependency>
+	  <dependency>
+		 <groupId>com.webguys.ponzu</groupId>
+		 <artifactId>api</artifactId>
+		 <version>1.2.0</version>
+	  </dependency>
+	  <dependency>
+		 <groupId>com.webguys.ponzu</groupId>
+		 <artifactId>impl</artifactId>
+		 <version>1.2.0</version>
+	  </dependency>
+	  <dependency>
+		 <groupId>junit</groupId>
+		 <artifactId>junit</artifactId>
+		 <version>4.11</version>
+	  </dependency>
+	  <dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>1.9.5</version>
+	  </dependency>
+	  <!-- Below json and httpclient lib are dependencies for jgeoplanet -->
+	  <dependency>
+		<groupId>org.json</groupId>
+		<artifactId>json</artifactId>
+		<version>20090211</version>
+	  </dependency>
+	  	<dependency>
+			<groupId>commons-httpclient</groupId>
+			<artifactId>commons-httpclient</artifactId>
+			<version>3.1</version>
+		</dependency>
+		<!-- TODO: Check with the below Alchemy API libraries -->
+		<dependency>
+			<groupId>org.apache.uima</groupId>
+			<artifactId>AlchemyAPIAnnotator</artifactId>
+			<version>2.3.1</version>
+		</dependency>
+		<dependency>
+	        <groupId>com.likethecolor</groupId>
+	        <artifactId>alchemy</artifactId>
+	        <version>1.0</version>
+	    </dependency>
+    <!-- TODO: Below dependency doesn't work -->
+<!--     <dependency> -->
+<!--         	<groupId>com.winterwell</groupId> -->
+<!-- 			<artifactId>jgeoplanet</artifactId> -->
+<!-- 			<version>0.1.2</version> -->
+<!--     </dependency> -->
+
+   </dependencies>
+</project>

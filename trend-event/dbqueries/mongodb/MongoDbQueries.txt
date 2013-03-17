@@ -1,0 +1,7 @@
+
+
+db.trend_c.find({as_of: {$gte : "2013-03-15 07:03:00+0000", $lt : "2013-03-17 07:03:00+0000"}, "locations.woeid" : 2487956}, {"trends.name":1})
+
+db.trend_c.find({as_of: {$gte : "2013-03-15 07:03:00+0000", $lt : "2013-03-17 07:03:00+0000"}, "locations.woeid" : 2487956})
+
+db.trend_c.find({"locations.woeid" : 2487956}).count()
