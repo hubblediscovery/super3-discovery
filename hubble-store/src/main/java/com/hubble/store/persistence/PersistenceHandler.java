@@ -13,7 +13,6 @@ import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Restrictions;
 
 import com.appdisc.trend.profile.TrendingProfile;
-import com.appdisc.trend.twitter.TwitterTrendingProfile;
 import com.hubble.store.common.request.AppRequestParameter;
 import com.hubble.store.common.util.HubbleLogger;
 import com.hubble.store.model.HubbleAppData;
@@ -162,7 +161,7 @@ public class PersistenceHandler {
 		
 	}
 	
-	private static Disjunction constructTitleDisjunctionForTrendingTopics(List<TwitterTrendingProfile> inputList) {
+	private static Disjunction constructTitleDisjunctionForTrendingTopics(List<TrendingProfile> inputList) {
 		
 		Map<String, Set<String>> trendingTopicToKeywordsMap = null;
 		Set<String> keywordsSet = null;
@@ -184,7 +183,7 @@ public class PersistenceHandler {
 		return orFilter;
 	}
 	
-	private static Disjunction constructDescriptionDisjunctionForTrendingTopics(List<TwitterTrendingProfile> inputList) {
+	private static Disjunction constructDescriptionDisjunctionForTrendingTopics(List<TrendingProfile> inputList) {
 		
 		Map<String, Set<String>> trendingTopicToKeywordsMap = null;
 		Set<String> keywordsSet = null;

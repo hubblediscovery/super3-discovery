@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.appdisc.trend.profile.TrendingProfile;
 import com.appdisc.trend.twitter.TwitterTrendingProfile;
 import com.hubble.store.common.request.AppRequestParameter;
 import com.hubble.store.common.util.HubbleLogger;
@@ -59,7 +60,7 @@ public class AppTest
     	TwitterTrendingProfile trendProfile = new TwitterTrendingProfile();
     	trendProfile.setTrendingTopicToKeywordsMap(trendToKeywordMap);
 
-    	List<TwitterTrendingProfile> inputParam = new ArrayList<TwitterTrendingProfile>();
+    	List<TrendingProfile> inputParam = new ArrayList<TrendingProfile>();
     	inputParam.add(trendProfile);
    	
     	appRequestParam.setTrendingTopics(inputParam);
