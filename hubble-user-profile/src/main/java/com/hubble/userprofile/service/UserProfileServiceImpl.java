@@ -27,6 +27,7 @@ import com.hubble.userprofile.persistence.QueryUserProfileDbImpl;
 import com.hubble.userprofile.types.ClientLoginType;
 import com.hubble.userprofile.types.FacebookConnectionData;
 import com.hubble.userprofile.types.FacebookUser;
+import com.hubble.userprofile.types.UserProfileResponse;
 import com.hubble.userprofile.utils.LoggerUtil;
 
 public class UserProfileServiceImpl implements UserProfileService {
@@ -329,6 +330,23 @@ public class UserProfileServiceImpl implements UserProfileService {
 	 */
 	private FacebookUser getUserDataFromCache() {
 		return null;
+	}
+
+	/**
+	 * Get an instance of {@link UserProfileResponse} with 
+	 * user's name, current city, hometown and likes keywords
+	 * @return {@link UserProfileResponse} object for this user
+	 */
+	public UserProfileResponse getUserProfileResponse() throws UserProfilerException {
+		UserProfileResponse userData = new UserProfileResponse(getUserName());
+		if (user == null) {
+			user = getHubbleFacebookUser(false);
+		}
+		String hubbleId = queryDb.getUserIdFromFacebookId(user.getFacebookId());
+		userData.setCurrentCity(queryDb.getCurrentCity(hubbleId));
+		userData.setHometown(queryDb.getHometown(hubbleId));
+		userData.setLikesKeywords(getUserLikesKeywords());
+		return userData;
 	}
 
 }

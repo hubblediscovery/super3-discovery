@@ -1,6 +1,6 @@
 package com.hubble.userprofile.hibernate;
 
-// Generated Feb 23, 2013 11:18:08 AM by Hibernate Tools 3.4.0.CR1
+// Generated Mar 16, 2013 11:34:47 PM by Hibernate Tools 3.4.0.CR1
 
 import java.util.Date;
 
@@ -9,10 +9,6 @@ import java.util.Date;
  */
 public class HubbleUser implements java.io.Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -507307609160777069L;
 	private String appId;
 	private String name;
 	private String gender;

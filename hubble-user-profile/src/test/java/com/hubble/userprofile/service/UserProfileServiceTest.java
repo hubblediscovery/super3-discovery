@@ -1,4 +1,4 @@
-package com.hubble.userprofile.main;
+package com.hubble.userprofile.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -16,8 +16,6 @@ import org.junit.rules.ExpectedException;
 import com.hubble.userprofile.exceptions.UserProfilerException;
 import com.hubble.userprofile.persistence.QueryUserProfileDb;
 import com.hubble.userprofile.persistence.QueryUserProfileDbImpl;
-import com.hubble.userprofile.service.UserProfileService;
-import com.hubble.userprofile.service.UserProfileServiceImpl;
 import com.hubble.userprofile.types.ClientLoginType;
 import com.hubble.userprofile.utils.LoggerUtil;
 import com.restfb.exception.FacebookOAuthException;
@@ -27,7 +25,7 @@ public class UserProfileServiceTest {
 	private QueryUserProfileDb queryDb = null;
 	private static final String narenFbId = "32819031";
 	private static final String naren2FbId = "100004318901331";
-	private static final String ACCESS_TOKEN = "AAACEdEose0cBAL3YnHSXIF38ZBwXxScD2QbSGv9HUlPgOQz4fal70ZCFFDbRc4kF5fKY6uSBQAKZBRRTlIDZBWpdAdidRU4gjASbaggrCZCCY7JZAZBKXIa";
+	private static final String ACCESS_TOKEN = "AAACEdEose0cBAFSoj4ZBiBZA4a8KCZAHkfajWnBavaoLVoVVVFZCJ74vaLniWK6uKHcpolxHXIUDh4UrogC3yrrxMkVTmmj6FYuJKA2cYgZDZD";
 
 	
 	@Rule
@@ -109,6 +107,11 @@ public class UserProfileServiceTest {
 		UserProfileService invalidTokenProfileSvc = new UserProfileServiceImpl(ClientLoginType.FACEBOOK,
 				"InvalidToken");
 		invalidTokenProfileSvc.getUserLikesKeywords();
+	}
+	
+	@Test
+	public void getUserProfileResponseObject() throws UserProfilerException {
+		LoggerUtil.logInfoMessage(profileSvc.getUserProfileResponse().toString());
 	}
 
 }

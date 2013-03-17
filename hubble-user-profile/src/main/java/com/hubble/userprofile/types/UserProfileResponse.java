@@ -80,4 +80,22 @@ public class UserProfileResponse {
 		this.likesKeywords = likesKeywords;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("UserProfileResponse [userFullName=");
+		builder.append(userFullName);
+		builder.append(", hometown=");
+		builder.append(hometown);
+		builder.append(", currentCity=");
+		builder.append(currentCity);
+		builder.append(", likesKeywords=");
+		builder.append(likesKeywords);
+		builder.append("]");
+		return builder.toString();
+	}
+
 }
