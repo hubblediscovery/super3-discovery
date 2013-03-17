@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 17, 2013 1:24:59 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.hubble.userprofile.hibernate.FacebookUserDemographics" table="FacebookUserDemographics" catalog="hubble_users">
+        <composite-id name="id" class="com.hubble.userprofile.hibernate.FacebookUserDemographicsId">
+            <key-property name="facebookId" type="string">
+                <column name="facebookId" length="45" />
+            </key-property>
+            <key-property name="userAppId" type="string">
+                <column name="User_AppId" length="45" />
+            </key-property>
+        </composite-id>
+        <property name="username" type="string">
+            <column name="Username" length="100" />
+        </property>
+        <property name="interestedIn" type="string">
+            <column name="InterestedIn" length="45" />
+        </property>
+        <property name="locale" type="string">
+            <column name="Locale" length="45" />
+        </property>
+        <property name="languages" type="string">
+            <column name="Languages" />
+        </property>
+        <property name="currentLocation" type="string">
+            <column name="CurrentLocation" />
+        </property>
+        <property name="meetingFor" type="string">
+            <column name="MeetingFor" />
+        </property>
+        <property name="political" type="string">
+            <column name="Political" />
+        </property>
+        <property name="relationshipStatus" type="string">
+            <column name="RelationshipStatus" length="45" />
+        </property>
+        <property name="religion" type="string">
+            <column name="Religion" />
+        </property>
+        <property name="significantOther" type="string">
+            <column name="SignificantOther" />
+        </property>
+        <property name="timeZone" type="string">
+            <column name="TimeZone" length="45" />
+        </property>
+        <property name="website" type="string">
+            <column name="Website" length="200" />
+        </property>
+        <property name="bio" type="string">
+            <column name="Bio" length="65535" />
+        </property>
+        <property name="email" type="string">
+            <column name="Email" length="100" />
+        </property>
+        <property name="thirdPartyId" type="string">
+            <column name="ThirdPartyId" length="45" />
+        </property>
+        <property name="updatedTime" type="timestamp">
+            <column name="UpdatedTime" length="19" />
+        </property>
+        <property name="verified" type="java.lang.Boolean">
+            <column name="Verified" />
+        </property>
+        <property name="work" type="binary">
+            <column name="Work" />
+        </property>
+    </class>
+</hibernate-mapping>
