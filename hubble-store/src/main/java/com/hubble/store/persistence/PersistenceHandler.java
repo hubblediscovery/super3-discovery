@@ -2,6 +2,8 @@ package com.hubble.store.persistence;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.hibernate.Criteria;
 import org.hibernate.ScrollMode;
@@ -10,6 +12,8 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Restrictions;
 
+import com.appdisc.trend.profile.TrendingProfile;
+import com.appdisc.trend.twitter.TwitterTrendingProfile;
 import com.hubble.store.common.request.AppRequestParameter;
 import com.hubble.store.common.util.HubbleLogger;
 import com.hubble.store.model.HubbleAppData;
@@ -158,26 +162,56 @@ public class PersistenceHandler {
 		
 	}
 	
-	private static Disjunction constructTitleDisjunctionForTrendingTopics(List<String> inputList) {
+	private static Disjunction constructTitleDisjunctionForTrendingTopics(List<TwitterTrendingProfile> inputList) {
 		
+		Map<String, Set<String>> trendingTopicToKeywordsMap = null;
+		Set<String> keywordsSet = null;
 		Disjunction orFilter = Restrictions.disjunction();
 		
-		for(String str : inputList) {
-			orFilter.add(Restrictions.like("HubbleAppData.appTitle", "%" + str + "%"));
+		for(TrendingProfile trendingProfile : inputList) {
+			// Get trend key and its corresponding keywords map
+			trendingTopicToKeywordsMap = trendingProfile.getTrendingTopicToKeywordsMap();
+			
+			// Iterate trend key map
+			for (Map.Entry<String, Set<String>> mapEntry : trendingTopicToKeywordsMap.entrySet()) { 
+				keywordsSet = mapEntry.getValue();
+			
+				for(String str: keywordsSet) {
+					orFilter.add(Restrictions.like("HubbleAppData.appTitle", "%" + str + "%"));
+			    }
+			}
 		}
-		
 		return orFilter;
 	}
 	
-	private static Disjunction constructDescriptionDisjunctionForTrendingTopics(List<String> inputList) {
+	private static Disjunction constructDescriptionDisjunctionForTrendingTopics(List<TwitterTrendingProfile> inputList) {
 		
+		Map<String, Set<String>> trendingTopicToKeywordsMap = null;
+		Set<String> keywordsSet = null;
 		Disjunction orFilter = Restrictions.disjunction();
 		
-		for(String str : inputList) {
+		for(TrendingProfile trendingProfile : inputList) {
+			// Get trend key and its corresponding keywords map
+			trendingTopicToKeywordsMap = trendingProfile.getTrendingTopicToKeywordsMap();
+			
+			// Iterate trend key map
+			for (Map.Entry<String, Set<String>> mapEntry : trendingTopicToKeywordsMap.entrySet()) { 
+				keywordsSet = mapEntry.getValue();
+			
+				for(String str: keywordsSet) {
+					orFilter.add(Restrictions.like("HubbleAppData.appDescription", "%" + str + "%"));
+			    }
+			}
+		}
+		return orFilter;
+		
+		/*Disjunction orFilter = Restrictions.disjunction();
+		
+		for(TrendingProfile trendingProfile : inputList) {
 			orFilter.add(Restrictions.like("HubbleAppData.appDescription", "%" + str + "%"));
 		}
 		
-		return orFilter;
+		return orFilter;*/
 	}
 	
 	
