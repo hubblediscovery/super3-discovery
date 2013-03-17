@@ -23,10 +23,12 @@ public class HubbleLogger {
 		System.out.println(message);
 	}
 	
-	public static void printList(List<String> list) {
-		for(String message : list) 
-			printMessage(message);
+	public static void printList(List<Integer> list) {
+		for(Integer message : list) 
+			printMessage(message.toString());
 	}
+	
+	
 	
 
 }
