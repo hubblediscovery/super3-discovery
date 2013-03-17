@@ -4,9 +4,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.appdisc.trend.twitter.TwitterTrendingProfile;
+
 public class AppRequestParameter{
 	
-	private List<String> trendingTopics = null;
+	private List<TwitterTrendingProfile> trendingTopics = null;
 	private List<String> userPageLikes = null;
 	private Map<String, Set<String>> trendingTopicsToKeyworkMap = null;
 	
@@ -14,16 +16,16 @@ public class AppRequestParameter{
 		new AppRequestParameter(null, null, null);
 	}
 	
-	public AppRequestParameter(List<String> pTrendingTopics, List<String> pUserPageLikes, Map<String, Set<String>> pTrendingTopicsToKeyworkMap) {
+	public AppRequestParameter(List<TwitterTrendingProfile> pTrendingTopics, List<String> pUserPageLikes, Map<String, Set<String>> pTrendingTopicsToKeyworkMap) {
 		this.trendingTopics = pTrendingTopics;
 		this.userPageLikes = pUserPageLikes;
 		this.trendingTopicsToKeyworkMap = pTrendingTopicsToKeyworkMap;
 	}
 	
-	public List<String> getTrendingTopics() {
+	public List<TwitterTrendingProfile> getTrendingTopics() {
 		return trendingTopics;
 	}
-	public void setTrendingTopics(List<String> trendingTopics) {
+	public void setTrendingTopics(List<TwitterTrendingProfile> trendingTopics) {
 		this.trendingTopics = trendingTopics;
 	}
 	public List<String> getUserPageLikes() {
