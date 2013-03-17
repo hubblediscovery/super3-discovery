@@ -33,6 +33,7 @@ import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
+import org.joda.time.DateTime;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
@@ -162,8 +163,10 @@ public class TrendReader {
 			SAXException, ParserConfigurationException {
 		Document keywordsDoc;
 		BasicDBObject queryByDate = new BasicDBObject();
-		String stDate = AppDiscConstants.DATE_FORMAT.format(startDate);
-		String edDate = AppDiscConstants.DATE_FORMAT.format(endDate);
+		String stDate = AppDiscConstants.DATE_FORMAT.print(new DateTime(
+				startDate));
+		String edDate = AppDiscConstants.DATE_FORMAT
+				.print(new DateTime(endDate));
 		System.out.println("Trend Start Date: " + stDate);
 		System.out.println("Trend End Date: " + edDate);
 		queryByDate.put("as_of",
