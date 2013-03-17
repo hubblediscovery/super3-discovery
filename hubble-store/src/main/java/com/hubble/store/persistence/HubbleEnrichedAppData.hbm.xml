@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 25, 2013 9:55:15 PM by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="HubbleEnrichedAppData" table="HUBBLE_ENRICHED_APP_DATA" catalog="hubble">
+        <composite-id name="id" class="HubbleEnrichedAppDataId">
+            <key-property name="hubbleAppId" type="int">
+                <column name="HUBBLE_APP_ID" />
+            </key-property>
+            <key-property name="appId" type="int">
+                <column name="APP_ID" />
+            </key-property>
+            <key-property name="appKeywords" type="string">
+                <column name="APP_KEYWORDS" length="65535" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="hubbleAppData" class="HubbleAppData" update="false" insert="false" fetch="select">
+            <column name="HUBBLE_APP_ID" not-null="true" />
+        </many-to-one>
+    </class>
+</hibernate-mapping>

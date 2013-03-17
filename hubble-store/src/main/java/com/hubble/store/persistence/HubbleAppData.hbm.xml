@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Feb 25, 2013 9:55:15 PM by Hibernate Tools 4.0.0 -->
+<hibernate-mapping>
+    <class name="HubbleAppData" table="HUBBLE_APP_DATA" catalog="hubble">
+        <id name="hubbleAppId" type="java.lang.Integer">
+            <column name="HUBBLE_APP_ID" />
+            <generator class="identity" />
+        </id>
+        <property name="appId" type="int">
+            <column name="APP_ID" not-null="true" />
+        </property>
+        <property name="appBundleId" type="string">
+            <column name="APP_BUNDLE_ID" length="2000" not-null="true" />
+        </property>
+        <property name="appLastUpdatedDate" type="timestamp">
+            <column name="APP_LAST_UPDATED_DATE" length="0" />
+        </property>
+        <property name="appReleasedDate" type="timestamp">
+            <column name="APP_RELEASED_DATE" length="0" />
+        </property>
+        <property name="appTitle" type="string">
+            <column name="APP_TITLE" length="2000" not-null="true" />
+        </property>
+        <property name="appDescription" type="string">
+            <column name="APP_DESCRIPTION" length="65535" />
+        </property>
+        <property name="appName" type="string">
+            <column name="APP_NAME" length="2000" />
+        </property>
+        <property name="appDeveloperInfo" type="string">
+            <column name="APP_DEVELOPER_INFO" length="2000" />
+        </property>
+        <property name="appType" type="string">
+            <column name="APP_TYPE" length="2000" />
+        </property>
+        <property name="appPrimaryCategory" type="string">
+            <column name="APP_PRIMARY_CATEGORY" length="2000" />
+        </property>
+        <property name="appSecondaryCategory" type="string">
+            <column name="APP_SECONDARY_CATEGORY" length="2000" />
+        </property>
+        <property name="appUnitPrice" type="big_decimal">
+            <column name="APP_UNIT_PRICE" precision="10" scale="4" />
+        </property>
+        <property name="appUnitCurrency" type="string">
+            <column name="APP_UNIT_CURRENCY" length="50" />
+        </property>
+        <set name="hubbleEnrichedAppDatas" table="HUBBLE_ENRICHED_APP_DATA" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="HUBBLE_APP_ID" not-null="true" />
+            </key>
+            <one-to-many class="HubbleEnrichedAppData" />
+        </set>
+    </class>
+</hibernate-mapping>

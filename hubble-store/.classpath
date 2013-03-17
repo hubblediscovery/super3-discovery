@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" output="target/classes" path="src/main/java"/>
+	<classpathentry kind="src" path="src/main/resource"/>
+	<classpathentry kind="src" output="target/test-classes" path="src/test/java"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/J2SE-1.5"/>
+	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER"/>
+	<classpathentry kind="lib" path="/Users/deepakvp/.m2/repository/mysql/mysql-connector-java/5.0.8/mysql-connector-java-5.0.8.jar"/>
+	<classpathentry kind="lib" path="/Users/deepakvp/.m2/repository/org/hibernate/hibernate-core/4.1.8.Final/hibernate-core-4.1.8.Final.jar"/>
+	<classpathentry kind="lib" path="/Users/deepakvp/.m2/repository/org/hibernate/javax/persistence/hibernate-jpa-2.0-api/1.0.1.Final/hibernate-jpa-2.0-api-1.0.1.Final.jar"/>
+	<classpathentry kind="lib" path="/Users/deepakvp/.m2/repository/dom4j/dom4j/1.6.1/dom4j-1.6.1.jar"/>
+	<classpathentry kind="lib" path="/Users/deepakvp/.m2/repository/org/hibernate/common/hibernate-commons-annotations/4.0.1.Final/hibernate-commons-annotations-4.0.1.Final.jar"/>
+	<classpathentry kind="lib" path="/Users/deepakvp/.m2/repository/org/jboss/logging/jboss-logging/3.1.0.GA/jboss-logging-3.1.0.GA.jar"/>
+	<classpathentry kind="lib" path="/Users/deepakvp/.m2/repository/org/jboss/spec/javax/transaction/jboss-transaction-api_1.1_spec/1.0.0.Final/jboss-transaction-api_1.1_spec-1.0.0.Final.jar"/>
+	<classpathentry kind="lib" path="/Users/deepakvp/.m2/repository/org/javassist/javassist/3.15.0-GA/javassist-3.15.0-GA.jar"/>
+	<classpathentry kind="lib" path="/Users/deepakvp/.m2/repository/antlr/antlr/2.7.7/antlr-2.7.7.jar"/>
+	<classpathentry kind="lib" path="/HUBBLE/LIBRARAY/httpcore-4.2.2.jar"/>
+	<classpathentry kind="lib" path="/HUBBLE/LIBRARAY/httpclient-4.2.3.jar"/>
+	<classpathentry kind="lib" path="/HUBBLE/LIBRARAY/org.apache.commons.httpclient.jar"/>
+	<classpathentry kind="lib" path="/HUBBLE/LIBRARAY/commons-logging-1.1.1.jar"/>
+	<classpathentry kind="lib" path="/HUBBLE/LIBRARAY/commons-codec-1.7.jar"/>
+	<classpathentry kind="lib" path="/HUBBLE/LIBRARAY/google-gson-2.2.2/gson-2.2.2.jar"/>
+	<classpathentry kind="lib" path="/HUBBLE/LIBRARAY/j-calais-1.0.jar"/>
+	<classpathentry kind="lib" path="/HUBBLE/LIBRARAY/guava-14.0-rc3.jar"/>
+	<classpathentry kind="lib" path="/HUBBLE/LIBRARAY/jackson-core-asl-1.8.3.jar"/>
+	<classpathentry kind="lib" path="/HUBBLE/LIBRARAY/jackson-mapper-asl-1.7.0.jar"/>
+	<classpathentry kind="output" path="target/classes"/>
+</classpath>
