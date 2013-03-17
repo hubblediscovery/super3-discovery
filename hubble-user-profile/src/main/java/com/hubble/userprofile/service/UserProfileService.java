@@ -3,6 +3,7 @@ package com.hubble.userprofile.service;
 import java.util.List;
 
 import com.hubble.userprofile.exceptions.UserProfilerException;
+import com.hubble.userprofile.types.UserProfileResponse;
 
 public interface UserProfileService {
 
@@ -35,5 +36,12 @@ public interface UserProfileService {
 	 * @return, the actual name of the user
 	 */
 	String getUserName();
+	
+	/**
+	 * Get an instance of {@link UserProfileResponse} with 
+	 * user's name, current city, hometown and likes keywords
+	 * @return {@link UserProfileResponse} object for this user
+	 */
+	UserProfileResponse getUserProfileResponse() throws UserProfilerException;
 
 }
