@@ -5,12 +5,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TimeZone;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
@@ -63,12 +63,11 @@ public class TrendProfileGenerator {
 		Location location = new Location(woeid);
 		location.setPlace(place);
 
-		AppDiscConstants.DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("UTC"));
-		String trendDateStr = AppDiscConstants.DATE_FORMAT.format(trendDate
-				.toDate());
+		String trendDateStr = AppDiscConstants.DATE_FORMAT.withZone(
+				DateTimeZone.UTC).print(trendDate);
 		// TODO: To confirm with the window for pick - 1 or 2 days
-		String nextDateStr = AppDiscConstants.DATE_FORMAT.format(trendDate
-				.plusDays(1).toDate());
+		String nextDateStr = AppDiscConstants.DATE_FORMAT.withZone(
+				DateTimeZone.UTC).print(trendDate.plusDays(1));
 		log.info("Trend Date: {}", trendDateStr);
 
 		DBCursor trendCursor = trendCollection.find(new BasicDBObject(
