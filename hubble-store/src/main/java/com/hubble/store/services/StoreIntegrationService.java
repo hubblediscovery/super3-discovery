@@ -1,11 +1,10 @@
-package com.hubble.store.integration;
+package com.hubble.store.services;
 
 import java.util.List;
 
 import com.hubble.store.common.request.AppRequestParameter;
 import com.hubble.store.model.HubbleAppData;
 import com.hubble.store.persistence.PersistenceHandler;
-
 
 public class StoreIntegrationService {
 	
@@ -28,7 +27,7 @@ public class StoreIntegrationService {
 		appList = PersistenceHandler.getAppForTrendingTopics(appRequestParam);
 		
 		if(appList == null) {
-			// Handle when no qualifying apps were found in the DB
+			// TODO Handle when no qualifying apps were found in the DB
 		}
 		
 		return  appList;
