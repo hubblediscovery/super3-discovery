@@ -16,6 +16,7 @@ import org.junit.rules.ExpectedException;
 
 import com.hubble.userprofile.exceptions.UserDoesNotExistException;
 import com.hubble.userprofile.exceptions.UserProfilerException;
+import com.hubble.userprofile.service.UserProfileExternalService;
 
 public class QueryUserProfileDbTest {
 	private QueryUserProfileDb queryDb = null;

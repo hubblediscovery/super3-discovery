@@ -3,10 +3,9 @@ package com.hubble.userprofile.service;
 import java.util.List;
 
 import com.hubble.userprofile.exceptions.UserProfilerException;
-import com.hubble.userprofile.types.UserProfileResponse;
 
-public interface UserProfileService {
-
+public interface ProfileService {
+	
 	/**
 	 * Get keywords that represent a user's likes
 	 * 
@@ -35,13 +34,21 @@ public interface UserProfileService {
 	 * 
 	 * @return, the actual name of the user
 	 */
-	String getUserName();
+	String getUserName() throws UserProfilerException;
 	
 	/**
-	 * Get an instance of {@link UserProfileResponse} with 
-	 * user's name, current city, hometown and likes keywords
-	 * @return {@link UserProfileResponse} object for this user
+	 * Returns the hubbleId of the user using the clientId (facebookId or twitterId or hubbleId)
+	 * @param clientId
+	 * @return
+	 * @throws UserProfilerException
 	 */
-	UserProfileResponse getUserProfileResponse() throws UserProfilerException;
+	String getHubbleId() throws UserProfilerException;
+	
+	/**
+	 * Update the database with all the user data Full upload of user data
+	 * 
+	 * @throws UserProfilerException
+	 */
+	public void updateUserProfile() throws UserProfilerException;
 
 }

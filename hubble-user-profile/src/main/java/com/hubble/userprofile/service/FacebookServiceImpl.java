@@ -5,8 +5,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
-
 import com.hubble.userprofile.exceptions.UserDoesNotExistException;
 import com.hubble.userprofile.exceptions.UserProfilerException;
 import com.hubble.userprofile.externaldatareader.FacebookDataReader;
@@ -24,26 +22,25 @@ import com.hubble.userprofile.persistence.DataWriter;
 import com.hubble.userprofile.persistence.HibernateDataWriter;
 import com.hubble.userprofile.persistence.QueryUserProfileDb;
 import com.hubble.userprofile.persistence.QueryUserProfileDbImpl;
-import com.hubble.userprofile.types.ClientLoginType;
 import com.hubble.userprofile.types.FacebookConnectionData;
 import com.hubble.userprofile.types.FacebookUser;
-import com.hubble.userprofile.types.UserProfileResponse;
 import com.hubble.userprofile.utils.LoggerUtil;
 
-public class UserProfileServiceImpl implements UserProfileService {
-	static Logger log = Logger.getLogger(UserProfileServiceImpl.class);
+public class FacebookServiceImpl implements FacebookService {
 
-	private FacebookDataReader fbUserDataReader = null;
+	private String accessToken = null;
 	private DataWriter writer = null;
 	private QueryUserProfileDb queryDb = null;
-	private FacebookUser user;
+	private FacebookUser user = null;
+	private FacebookDataReader fbUserDataReader = null;
+	private String facebookId = null;
 
-	public UserProfileServiceImpl(ClientLoginType loginType, String authToken) {
-		if (ClientLoginType.FACEBOOK.equals(loginType)) {
-			fbUserDataReader = new FacebookDataReaderImpl(authToken);
-		}
-		writer = new HibernateDataWriter();
-		queryDb = new QueryUserProfileDbImpl();
+	protected FacebookServiceImpl(String accessToken, String facebookId) {
+		this.accessToken = accessToken;
+		this.facebookId = facebookId;
+		this.writer = new HibernateDataWriter();
+		this.queryDb = new QueryUserProfileDbImpl();
+		this.fbUserDataReader = new FacebookDataReaderImpl(this.accessToken);
 	}
 
 	/**
@@ -53,10 +50,8 @@ public class UserProfileServiceImpl implements UserProfileService {
 	 * @throws UserProfilerException
 	 */
 	public List<String> getUserLikesKeywords() throws UserProfilerException {
-		// update user profile, capture new likes etc
-		updateUserProfile();
 		// Query keywords for all the entities the user has liked
-		return queryDbForKeywords();
+		return getKeywordsForLikedEntities();
 	}
 
 	/**
@@ -68,11 +63,8 @@ public class UserProfileServiceImpl implements UserProfileService {
 	 * @throws UserProfilerException
 	 */
 	public boolean userExists() throws UserProfilerException {
-		if (user == null) {
-			user = getHubbleFacebookUser(false);
-		}
 		try {
-			if (!"".equals(queryDb.getUserIdFromFacebookId(user.getFacebookId()))) {
+			if (!"".equals(getHubbleId())) {
 				return true;
 			}
 		} catch (UserDoesNotExistException e) {
@@ -89,11 +81,8 @@ public class UserProfileServiceImpl implements UserProfileService {
 	 * @throws UserProfilerException
 	 */
 	public List<String> getUserCities() throws UserProfilerException {
-		if (user == null) {
-			user = getHubbleFacebookUser(false);
-		}
 		List<String> citiesList = new ArrayList<String>();
-		String hubbleId = queryDb.getUserIdFromFacebookId(user.getFacebookId());
+		String hubbleId = getHubbleId();
 		citiesList.add(queryDb.getCurrentCity(hubbleId));
 		citiesList.add(queryDb.getHometown(hubbleId));
 		return citiesList;
@@ -103,87 +92,52 @@ public class UserProfileServiceImpl implements UserProfileService {
 	 * Get the actual name of the user
 	 * 
 	 * @return, the actual name of the user
+	 * @throws UserProfilerException
 	 */
-	public String getUserName() {
-		if (user == null) {
-			user = getHubbleFacebookUser(false);
+	public String getUserName() throws UserProfilerException {
+		return queryDb.getUserName(getHubbleId());
+	}
+
+	@Override
+	public void insertNewFacebookUser() throws UserProfilerException {
+		user = getHubbleFacebookUser(true);
+		// batch write
+		List userData = new ArrayList();
+		// HubbleUser
+		userData.add(HubbleHibernateMapper.getPersistenceHubbleUser(user));
+		// FacebookUserDemographics
+		userData.add(HubbleHibernateMapper.getFacebookUserDemographics(user));
+		// FacebookUserInterests
+		userData.add(HubbleHibernateMapper.getFacebookUserInterests(user));
+		// FbUserLikedEntites
+		for (FbUserLikedEntities likedEntity : HubbleHibernateMapper
+				.getFbUserLikedEntities(user)) {
+			userData.add(likedEntity);
 		}
-		return user.getName();
+		// UserFriends
+		for (UserFriends friends : HubbleHibernateMapper.getUserFriends(user)) {
+			userData.add(friends);
+		}
+		// Write all data
+		writer.batchWriteData(userData);
+		// add entity data that dont already exist in entity database
+		addNewFbEntitesToDb();
 	}
 
 	/**
-	 * Get keywords of all the entities the user likes
+	 * Update user's current City from facebook
 	 * 
-	 * @return
+	 * @param hubbleId
 	 * @throws UserProfilerException
-	 */
-	private List<String> queryDbForKeywords() throws UserProfilerException {
-		Set<String> keywords = new HashSet<String>();
-		if (user == null) {
-			user = getHubbleFacebookUser(false);
-		}
-		List<String> likedEntityId = queryDb.getLikedEntities(queryDb
-				.getUserIdFromFacebookId(user.getFacebookId()));
-		for (String entityId : likedEntityId) {
-			keywords.addAll(queryDb.getEntityKeywords(entityId));
-		}
-		return new ArrayList<String>(keywords);
-	}
-
-	/**
-	 * Update the database with all the user data Full upload of user data
-	 * 
-	 * @param loginType
-	 * @param authToken
-	 * @throws UserProfilerException
-	 */
-	// suppress warnings is okay, this list is just a container for batchwrite
-	// should not be used outside of this method and batchWriteData.
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private void updateUserProfile() throws UserProfilerException {
-		FacebookUser user = getHubbleFacebookUser(true);
-		if (userExists()) {
-			// User is already part of the system
-			// Just update the relevant parts
-			try {
-				updateUserData();
-			} catch (SecurityException e) {
-				LoggerUtil.logStackTrace(e);
-				throw new RuntimeException(
-						"FATAL error occured, terminating...");
-			} catch (NoSuchFieldException e) {
-				LoggerUtil.logStackTrace(e);
-				throw new RuntimeException(
-						"FATAL error occured, terminating...");
-			} catch (UserProfilerException checkedExp) {
-				LoggerUtil.logStackTrace(checkedExp);
-				// TODO : Retry data update
-				// Set new exception error message and throwing it back..
-				throw new UserProfilerException("Error updating profile");
-			}
-		} else {
-			insertNewUser();
-		}
-	}
-
-	/**
-	 * Update parts of user data that have changed, this is for returning users
-	 * use update data paths. Look for changes ONLY in current city / hometown
-	 * and in likes and update them TODO : Add mechanism to update rest of the
-	 * profile.
-	 * 
-	 * @throws UserProfilerException
-	 * @throws NoSuchFieldException
 	 * @throws SecurityException
-	 * 
+	 * @throws NoSuchFieldException
 	 */
-	private void updateUserData() throws UserProfilerException,
-			SecurityException, NoSuchFieldException {
+	public void updateCurrentCity(String hubbleId)
+			throws UserProfilerException, SecurityException,
+			NoSuchFieldException {
 		if (user == null) {
-			user = getHubbleFacebookUser(true);
+			user = getHubbleFacebookUser(false);
 		}
-		// Update Location and Likes
-		String hubbleId = queryDb.getUserIdFromFacebookId(user.getFacebookId());
 		String currentCity = queryDb.getCurrentCity(hubbleId);
 		String fbCurrentCity = user.getGeography()
 				.getCurrentPermanentLocation();
@@ -197,6 +151,20 @@ public class UserProfileServiceImpl implements UserProfileService {
 								hubbleId));
 			}
 		}
+	}
+
+	/**
+	 * Update user's home town if it has changed on facebook
+	 * @param hubbleId
+	 * @throws UserProfilerException
+	 * @throws SecurityException
+	 * @throws NoSuchFieldException
+	 */
+	public void updateHomeTown(String hubbleId) throws UserProfilerException,
+			SecurityException, NoSuchFieldException {
+		if (user == null) {
+			user = getHubbleFacebookUser(false);
+		}
 		String fbHomeTown = user.getHometown();
 		String hubbleHomeTown = queryDb.getHometown(hubbleId);
 		if (fbHomeTown != null) {
@@ -206,6 +174,19 @@ public class UserProfileServiceImpl implements UserProfileService {
 				hubbleUser.setHometown(fbHomeTown);
 				writer.updateField(hubbleUser, "hometown", hubbleId);
 			}
+		}
+	}
+
+	/**
+	 * Update user's likes data from facebook remove / add liked / unliked
+	 * entities
+	 * 
+	 * @param hubbleId
+	 * @throws UserProfilerException
+	 */
+	public void updateUserLikes(String hubbleId) throws UserProfilerException {
+		if (user == null) {
+			user = getHubbleFacebookUser(true);
 		}
 		// update likes
 		List<String> likedEntityIds = queryDb.getLikedEntities(queryDb
@@ -233,40 +214,69 @@ public class UserProfileServiceImpl implements UserProfileService {
 		}
 		writer.batchWriteData(additionList);
 		writer.batchDeleteData(removeList);
-		addNewFbEntitesToDb();
 	}
 
 	/**
-	 * Insert all data for a new user
+	 * Update the database with all the user data Full upload of user data
 	 * 
-	 * @param user
+	 * @param loginType
+	 * @param authToken
 	 * @throws UserProfilerException
-	 *             Suppress warnings is okay since it is a heterogeneous list
 	 */
+	// suppress warnings is okay, this list is just a container for batchwrite
+	// should not be used outside of this method and batchWriteData.
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private void insertNewUser() throws UserProfilerException {
-		user = getHubbleFacebookUser(true);
-		// batch write
-		List userData = new ArrayList();
-		// HubbleUser
-		userData.add(HubbleHibernateMapper.getPersistenceHubbleUser(user));
-		// FacebookUserDemographics
-		userData.add(HubbleHibernateMapper.getFacebookUserDemographics(user));
-		// FacebookUserInterests
-		userData.add(HubbleHibernateMapper.getFacebookUserInterests(user));
-		// FbUserLikedEntites
-		for (FbUserLikedEntities likedEntity : HubbleHibernateMapper
-				.getFbUserLikedEntities(user)) {
-			userData.add(likedEntity);
+	public void updateUserProfile() throws UserProfilerException {
+		FacebookUser user = getHubbleFacebookUser(true);
+		if (userExists()) {
+			// User is already part of the system
+			// Just update the relevant parts
+			try {
+				updateUserData();
+			} catch (SecurityException e) {
+				LoggerUtil.logStackTrace(e);
+				throw new RuntimeException(
+						"FATAL error occured, terminating...");
+			} catch (NoSuchFieldException e) {
+				LoggerUtil.logStackTrace(e);
+				throw new RuntimeException(
+						"FATAL error occured, terminating...");
+			} catch (UserProfilerException checkedExp) {
+				LoggerUtil.logStackTrace(checkedExp);
+				// TODO : Retry data update
+				// Set new exception error message and throwing it back..
+				throw new UserProfilerException("Error updating profile");
+			}
+		} else {
+			insertNewFacebookUser();
 		}
-		// UserFriends
-		for (UserFriends friends : HubbleHibernateMapper.getUserFriends(user)) {
-			userData.add(friends);
+	}
+
+	/**
+	 * If user is cached return cached user data, if not get user from facebook
+	 * 
+	 * @return, FacebookUser
+	 */
+	private FacebookUser getHubbleFacebookUser(boolean includeConnections) {
+		// TODO : if user is already in cache, return from cache
+		if (getUserDataFromCache() == null) {
+			user = ThirdPartyDataMapper.getHubbleFbUser(fbUserDataReader
+					.getFacebookUser());
+			if (includeConnections) {
+				user.setLikes(fbUserDataReader.getLikesList());
+				user.setFriends(fbUserDataReader.getFriendsList());
+			}
 		}
-		// Write all data
-		writer.batchWriteData(userData);
-		// add entity data that dont already exist in entity database
-		addNewFbEntitesToDb();
+		return user;
+	}
+
+	/**
+	 * Get user data from cache
+	 * 
+	 * @return
+	 */
+	private FacebookUser getUserDataFromCache() {
+		return null;
 	}
 
 	/**
@@ -305,48 +315,46 @@ public class UserProfileServiceImpl implements UserProfileService {
 		}
 	}
 
-	/**
-	 * If user is cached return cached user data, if not get user from facebook
-	 * 
-	 * @return, FacebookUser
-	 */
-	private FacebookUser getHubbleFacebookUser(boolean includeConnections) {
-		// TODO : if user is already in cache, return from cache
-		if (getUserDataFromCache() == null) {
-			user = ThirdPartyDataMapper.getHubbleFbUser(fbUserDataReader
-					.getFacebookUser());
-			if (includeConnections) {
-				user.setLikes(fbUserDataReader.getLikesList());
-				user.setFriends(fbUserDataReader.getFriendsList());
-			}
-		}
-		return user;
+	@Override
+	public String getHubbleId() throws UserProfilerException {
+		return queryDb.getUserIdFromFacebookId(this.facebookId);
 	}
 
 	/**
-	 * Get user data from cache
+	 * Update parts of user data that have changed, this is for returning users
+	 * use update data paths. Look for changes ONLY in current city / hometown
+	 * and in likes and update them TODO : Add mechanism to update rest of the
+	 * profile.
+	 * 
+	 * @throws UserProfilerException
+	 * @throws NoSuchFieldException
+	 * @throws SecurityException
+	 * 
+	 */
+	private void updateUserData() throws UserProfilerException,
+			SecurityException, NoSuchFieldException {
+		// Update Location and Likes
+		String hubbleId = getHubbleId();
+		updateCurrentCity(hubbleId);
+		updateHomeTown(hubbleId);
+		updateUserLikes(hubbleId);
+		addNewFbEntitesToDb();
+	}
+
+	/**
+	 * Get keywords of all the entities the user likes
 	 * 
 	 * @return
+	 * @throws UserProfilerException
 	 */
-	private FacebookUser getUserDataFromCache() {
-		return null;
-	}
-
-	/**
-	 * Get an instance of {@link UserProfileResponse} with 
-	 * user's name, current city, hometown and likes keywords
-	 * @return {@link UserProfileResponse} object for this user
-	 */
-	public UserProfileResponse getUserProfileResponse() throws UserProfilerException {
-		UserProfileResponse userData = new UserProfileResponse(getUserName());
-		if (user == null) {
-			user = getHubbleFacebookUser(false);
+	private List<String> getKeywordsForLikedEntities()
+			throws UserProfilerException {
+		Set<String> keywords = new HashSet<String>();
+		List<String> likedEntityId = queryDb.getLikedEntities(getHubbleId());
+		for (String entityId : likedEntityId) {
+			keywords.addAll(queryDb.getEntityKeywords(entityId));
 		}
-		String hubbleId = queryDb.getUserIdFromFacebookId(user.getFacebookId());
-		userData.setCurrentCity(queryDb.getCurrentCity(hubbleId));
-		userData.setHometown(queryDb.getHometown(hubbleId));
-		userData.setLikesKeywords(getUserLikesKeywords());
-		return userData;
+		return new ArrayList<String>(keywords);
 	}
 
 }

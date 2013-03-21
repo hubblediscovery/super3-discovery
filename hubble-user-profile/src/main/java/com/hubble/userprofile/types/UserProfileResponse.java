@@ -14,11 +14,12 @@ public class UserProfileResponse {
 	private String userFullName;
 	private String hometown;
 	private String currentCity;
+	private List<String> otherCities;
 	private List<String> likesKeywords;
 
 	/**
 	 * User profile object built for parameters required in the response
-	 * User by Hubble integration project
+	 * Used by Hubble integration project
 	 */
 	public UserProfileResponse(String userFullName) {
 		this.userFullName = userFullName;
@@ -27,15 +28,29 @@ public class UserProfileResponse {
 	/**
 	 * @return the userFullName
 	 */
-	public String getUserName() {
+	public String getUserFullName() {
 		return userFullName;
 	}
 
 	/**
 	 * @param userFullName the userFullName to set
 	 */
-	public void setUserName(String userName) {
-		this.userFullName = userName;
+	public void setUserFullName(String userFullName) {
+		this.userFullName = userFullName;
+	}
+
+	/**
+	 * @return the otherCities
+	 */
+	public List<String> getOtherCities() {
+		return otherCities;
+	}
+
+	/**
+	 * @param otherCities the otherCities to set
+	 */
+	public void setOtherCities(List<String> otherCities) {
+		this.otherCities = otherCities;
 	}
 
 	/**
@@ -92,6 +107,8 @@ public class UserProfileResponse {
 		builder.append(hometown);
 		builder.append(", currentCity=");
 		builder.append(currentCity);
+		builder.append(", otherCities=");
+		builder.append(otherCities);
 		builder.append(", likesKeywords=");
 		builder.append(likesKeywords);
 		builder.append("]");

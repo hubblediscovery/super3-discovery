@@ -3,6 +3,8 @@
  */
 package com.hubble.userprofile.utils;
 
+import java.util.List;
+
 import org.apache.log4j.Logger;
 
 /**
@@ -32,6 +34,10 @@ public class LoggerUtil {
 	}
 
 	public static void logInfoMessage(String message) {
+		log.info(message);
+	}
+	
+	public static void logInfoMessage(List<String> message) {
 		log.info(message);
 	}
 
