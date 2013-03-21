@@ -22,7 +22,7 @@ public class ServiceFactory {
 		return new FacebookServiceImpl(accessToken, facebookId);
 	}
 
-	public static UserProfileExternalService getUserProfileService(
+	public static UserProfileExternalService getUserProfileExternalService(
 			ClientLoginType loginType, String accessToken, String clientUserId) {
 		if(loginType == null || accessToken == null || clientUserId == null) {
 			throw new IllegalArgumentException("loginType/authToken/clientUserId cannot be null");

@@ -35,7 +35,7 @@ public class UserProfileServiceTest {
 
 	@Before
 	public void setUp() throws Exception {
-		profileSvc = ServiceFactory.getUserProfileService(
+		profileSvc = ServiceFactory.getUserProfileExternalService(
 				ClientLoginType.FACEBOOK, ACCESS_TOKEN, narenFbId);
 		generalProfileSvc = ServiceFactory.getFacebookService(ACCESS_TOKEN,
 				narenFbId);
@@ -115,7 +115,7 @@ public class UserProfileServiceTest {
 		expectedException.expect(FacebookOAuthException.class);
 		expectedException.expectMessage("Invalid OAuth access token");
 		UserProfileExternalService invalidTokenProfileSvc = ServiceFactory
-				.getUserProfileService(ClientLoginType.FACEBOOK, "accesstoken",
+				.getUserProfileExternalService(ClientLoginType.FACEBOOK, "accesstoken",
 						narenFbId);
 		invalidTokenProfileSvc.getUserProfileResponse();
 	}
@@ -125,7 +125,7 @@ public class UserProfileServiceTest {
 		expectedException.expect(UserDoesNotExistException.class);
 		expectedException.expectMessage("does not exist in hubble realm");
 		UserProfileExternalService invalidTokenProfileSvc = ServiceFactory
-				.getUserProfileService(ClientLoginType.FACEBOOK, ACCESS_TOKEN,
+				.getUserProfileExternalService(ClientLoginType.FACEBOOK, ACCESS_TOKEN,
 						narenFbId + "55");
 		invalidTokenProfileSvc.getUserProfileResponse();
 	}
@@ -135,7 +135,7 @@ public class UserProfileServiceTest {
 		expectedException.expect(IllegalArgumentException.class);
 		expectedException.expectMessage("loginType/authToken/clientUserId cannot be null");
 		UserProfileExternalService nullTokenProfileSvc = ServiceFactory
-				.getUserProfileService(ClientLoginType.FACEBOOK, "accesstoken",
+				.getUserProfileExternalService(ClientLoginType.FACEBOOK, "accesstoken",
 						null);
 	}
 
