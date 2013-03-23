@@ -15,7 +15,7 @@ import com.hubble.store.handlers.enrich.CalaisTextEnrichmentProcessor;
 import com.hubble.store.model.HubbleAppData;
 import com.hubble.store.persistence.PersistenceHandler;
 
-public class HubbleConcurrentCrawler {
+public class HubbleConcurrentCrawler implements ConcurrentCrawler {
 	public static final int APPLE_APPSTORE_CRAWLER = 1;
 	public static final int GOOGLE_PLAY_CRAWLER = 2;
 	public static final int MICROSOFT_MARKETPLACE_CRAWLER = 3;
@@ -24,7 +24,33 @@ public class HubbleConcurrentCrawler {
 	private final static HubbleUtil hubbleUtil = new HubbleUtil();
 
 	public static int crawlerType = 0;
-
+	
+	private static HubbleConcurrentCrawler crawler;
+	
+	private HubbleConcurrentCrawler() {
+		
+	}
+	
+	/**
+	 * Initialization method for the crawler
+	 * 
+	 * @return A singleton HubbleConcurrentCrawler object
+	 */
+	public static synchronized HubbleConcurrentCrawler initializeCrawler() {
+		if(crawler == null) {
+			crawler = new HubbleConcurrentCrawler();
+		}
+		return crawler;
+	}
+	
+	public boolean startCrawling() {
+		return true;
+	}
+	
+	public boolean enrich() {
+		return true;
+	}
+	
 	/**
 	 * @param args
 	 */

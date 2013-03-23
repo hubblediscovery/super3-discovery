@@ -82,8 +82,6 @@ public class PersistenceHandler {
 		if(session == null) initializeSession();
 		Criteria criteria = session.createCriteria(HubbleAppData.class);
 			    
-		//String hql = "SELECT APP_TITLE FROM HUBBLE_APP_DATA ";
-		//Query query = session.createQuery(hql);
 		return criteria.scroll(ScrollMode.FORWARD_ONLY);
 	}
 	
@@ -105,9 +103,7 @@ public class PersistenceHandler {
 			session.save(data);
 		}
 		
-		
 		session.getTransaction().commit();
-		
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -133,21 +129,8 @@ public class PersistenceHandler {
 		 
 		Criteria c = session.createCriteria(HubbleAppData.class, "HubbleAppData");
 		c.createAlias("hubbleEnrichedAppDatas", "hubbleEnrichedAppDatas"); // inner join by default
-		c.add(constructTitleDisjunctionForTrendingTopics(appRequestParam.getTrendingTopics()));
-		c.add(constructDescriptionDisjunctionForTrendingTopics(appRequestParam.getTrendingTopics()));
-		
-		//c.add(Restrictions.like("hubbleEnrichedAppDatas.appKeywords", "%Google%"));
-		
-	/*	String appQuery = "select HUBBLE_APP_DATA.HUBBLE_APP_ID" + 
-" FROM HUBBLE_APP_DATA join HUBBLE_ENRICHED_APP_DATA " + 
-" where HUBBLE_APP_DATA.HUBBLE_APP_ID = HUBBLE_ENRICHED_APP_DATA.HUBBLE_APP_ID " +
-" AND HUBBLE_APP_DATA.APP_ID = HUBBLE_ENRICHED_APP_DATA.APP_ID " +
-" AND (HUBBLE_APP_DATA.APP_TITLE like '%Google%' " + 
-" OR HUBBLE_APP_DATA.APP_DESCRIPTION like '%Google%' " +
-" OR HUBBLE_ENRICHED_APP_DATA.APP_KEYWORDS like '%Google%'" + 
-") order by HUBBLE_APP_DATA.HUBBLE_APP_ID";
-				
-		Query query = session.createQuery(appQuery);*/
+		c.add(constructTitleDisjunctionForTrendingTopics(appRequestParam.getCurrentCityTrendingProfile()));
+		c.add(constructDescriptionDisjunctionForTrendingTopics(appRequestParam.getCurrentCityTrendingProfile()));
 		
 		List<HubbleAppData> list = c.list();
 		

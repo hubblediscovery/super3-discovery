@@ -63,7 +63,7 @@ public class AppTest
     	List<TrendingProfile> inputParam = new ArrayList<TrendingProfile>();
     	inputParam.add(trendProfile);
    	
-    	appRequestParam.setTrendingTopics(inputParam);
+    	appRequestParam.setCurrentCityTrendingProfile(inputParam);
     	PersistenceHandler.getAppForTrendingTopics(appRequestParam);
     }
 }
