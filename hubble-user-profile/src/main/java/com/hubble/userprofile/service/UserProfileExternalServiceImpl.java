@@ -46,9 +46,9 @@ public class UserProfileExternalServiceImpl implements UserProfileExternalServic
 	 */
 	public UserProfileResponse getUserProfileResponse()
 			throws UserProfilerException {
+		profileService.updateUserProfile();
 		UserProfileResponse userData = new UserProfileResponse(
 				profileService.getUserName());
-		profileService.updateUserProfile();
 		String hubbleId = profileService.getHubbleId();
 		userData.setCurrentCity(queryDb.getCurrentCity(hubbleId));
 		userData.setHometown(queryDb.getHometown(hubbleId));
