@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 17, 2013 1:24:59 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.hubble.userprofile.hibernate.Friend" table="Friend" catalog="hubble_users">
+        <id name="friendId" type="string">
+                <column name="FRIEND_ID_C" length="45" />
+                <generator class="assigned" />
+        </id>
+        <set name="users" cascade="all" table="User_Friends" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="FRIEND_ID" not-null="true" />
+            </key>
+            <many-to-many entity-name="com.hubble.userprofile.hibernate.User">
+                <column name="USER_ID" not-null="true" />
+            </many-to-many>
+        </set>
+    </class>
+</hibernate-mapping>

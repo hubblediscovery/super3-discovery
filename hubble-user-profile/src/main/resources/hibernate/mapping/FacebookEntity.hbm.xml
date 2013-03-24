@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 17, 2013 1:24:59 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.hubble.userprofile.hibernate.FacebookEntity" table="Facebook_Entity" catalog="hubble_users">
+        <id name="entityId" type="string">
+            <column name="ENTITY_ID" length="45" />
+            <generator class="assigned"/>
+        </id>
+        <property name="name" type="string">
+            <column name="Name" length="100" />
+        </property>
+        <property name="category" type="string">
+            <column name="Category" length="100" />
+        </property>
+        <property name="createdTime" type="string">
+            <column name="CreatedTime" length="45" />
+        </property>
+        <property name="keywords" type="string">
+            <column name="Keywords" length="65535" />
+        </property>
+        <property name="description" type="string">
+            <column name="Description" length="65535" />
+        </property>
+        <set name="users" cascade="all" table="User_Liked_Entities" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="ENTITY_ID" not-null="true" />
+            </key>
+            <many-to-many entity-name="com.hubble.userprofile.hibernate.User">
+                <column name="USER_ID" not-null="true" />
+            </many-to-many>
+        </set>
+    </class>
+</hibernate-mapping>

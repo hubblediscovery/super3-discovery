@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.hubble.userprofile.hibernate.User" table="User" catalog="hubble_users">
+        <id name="userId" type="long">
+            <column name="USER_ID"/>
+            <generator class="native"/>
+        </id>
+        <property name="name" type="string">
+            <column name="Name" length="100" not-null="true" />
+        </property>
+        <property name="gender" type="string">
+            <column name="Gender" length="45" />
+        </property>
+        <property name="birthday" type="timestamp">
+            <column name="Birthday" length="19" />
+        </property>
+        <property name="hometown" type="string">
+            <column name="Hometown" />
+        </property>
+        <one-to-one name="interests" cascade="all" class="com.hubble.userprofile.hibernate.UserInterest" />
+        <one-to-one name="demographics" cascade="all" class="com.hubble.userprofile.hibernate.UserDemographics" />
+        <set name="friends" cascade="all" table="User_Friends" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="USER_ID" not-null="true" />
+            </key>
+            <many-to-many entity-name="com.hubble.userprofile.hibernate.Friend">
+                <column name="FRIEND_ID" not-null="true" />
+            </many-to-many>
+        </set>
+        <set name="likedEntities" cascade="all" table="User_Liked_Entities" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="USER_ID" not-null="true" />
+            </key>
+            <many-to-many entity-name="com.hubble.userprofile.hibernate.FacebookEntity">
+                <column name="ENTITY_ID" not-null="true" />
+            </many-to-many>
+        </set>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 17, 2013 1:24:59 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.hubble.userprofile.hibernate.UserInterest" table="User_Interest" catalog="hubble_users">
+        <id name="userId" type="long">
+            <column name="USER_ID" />
+            <generator class="foreign">
+				<param name="property">user</param>
+			</generator>
+        </id>
+        <one-to-one name="user" class="com.hubble.userprofile.hibernate.User" constrained="true"/>
+        <property name="quotes" type="string">
+            <column name="Quotes" length="500" />
+        </property>
+        <property name="sports" type="string">
+            <column name="Sports" length="500" />
+        </property>
+        <property name="interests" type="string">
+            <column name="Interests" length="65535" />
+        </property>
+    </class>
+</hibernate-mapping>
