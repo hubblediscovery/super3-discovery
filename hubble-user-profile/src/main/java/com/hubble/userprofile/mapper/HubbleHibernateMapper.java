@@ -136,9 +136,9 @@ public class HubbleHibernateMapper {
 	 */
 	public static List<UserFriends> getUserFriends(FacebookUser user) {
 		List<UserFriends> friendsList = new ArrayList<UserFriends>();
-		for (FacebookData data : user.getFriends()) {
-			friendsList.add(new UserFriends(new UserFriendsId(user.getId(),
-					data.getId())));
+		for (FacebookData fbFriend : user.getFriends()) {
+			friendsList.add(new UserFriends(new UserFriendsId(fbFriend.getId(),
+					user.getId())));
 		}
 		return friendsList;
 	}
