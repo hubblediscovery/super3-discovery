@@ -68,6 +68,5 @@
         <property name="work" type="binary">
             <column name="Work" />
         </property>
-        <many-to-one name="fbUsrDemoToHubbleUser" class="com.hubble.userprofile.hibernate.HubbleUser" column="AppId" unique="true"/>
     </class>
 </hibernate-mapping>
